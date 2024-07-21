@@ -14,6 +14,8 @@ fileElem.onchange = (e) => {
 
     if(files.length === 0) {
         alert('少なくとも一件画像ファイルを指定してください。');
+        quizzes = [];
+        return;
     }
 
     oldFiles = files;
@@ -24,6 +26,8 @@ fileElem.onchange = (e) => {
 
     if(files.length === 0) {
         alert('指定されたファイルは全て画像ファイルではありませんでした。\r\n画像ファイルを指定してください。')
+        quizzes = [];
+        return;
     }
 
     if(files.length != oldFiles.length) {
