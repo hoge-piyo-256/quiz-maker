@@ -1,0 +1,71 @@
+:root {
+    --var-header-height: 30px;
+    --var-background: #1f1f1f;
+    --var-foreground: white;
+    --var-first-color: #660000;
+    --var-second-color: #aa0000;
+    --main-color: red;
+}
+
+body {
+    background: var(--var-background);
+    color: var(--var-foreground);
+    margin: 0;
+}
+
+.header-container {
+    background: var(--var-first-color);
+    height: var(--var-header-height);
+    width: calc(100vw - 20px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 5px 10px;
+}
+
+.header {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: calc(100% - 20px);
+}
+
+.header-space {
+    height: var(--var-header-height);
+    top: 0;
+    left: 0;
+    padding: 5px;
+}
+
+.file-button::file-selector-button {
+    background: var(--var-second-color);
+    color: var(--var-foreground);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 100px;
+}
+
+.change-quiz-button {
+    background: var(--var-second-color);
+    color: var(--var-foreground);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 100px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.main {
+    padding: 5px;
+    width: 100vw;
+    height: max-content;
+    box-sizing: border-box;
+}
+
+.quiz-image {
+    width: 100%;
+    box-sizing: border-box;
+}
