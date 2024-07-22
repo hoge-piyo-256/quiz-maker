@@ -1,5 +1,5 @@
 :root {
-    --var-header-height: 30px;
+    --var-header-height: 50px;
     --var-background: #1f1f1f;
     --var-foreground: white;
     --var-first-color: #660000;
@@ -13,21 +13,16 @@ body {
     margin: 0;
 }
 
-.header-container {
+.header {
     background: var(--var-first-color);
     height: var(--var-header-height);
-    width: calc(100vw - 20px);
+    width: 100vw;
     position: fixed;
     top: 0;
     left: 0;
     padding: 5px 10px;
-}
-
-.header {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: calc(100% - 20px);
+    box-sizing: border-box;
+    display: flex;
 }
 
 .header-space {
@@ -35,6 +30,11 @@ body {
     top: 0;
     left: 0;
     padding: 5px;
+}
+
+.file-button {
+    margin: auto 0;
+    display: block;
 }
 
 .file-button::file-selector-button {
@@ -51,10 +51,8 @@ body {
     border: none;
     padding: 5px 10px;
     border-radius: 100px;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    margin: auto 0 auto auto;
+    display: block;
     cursor: pointer;
 }
 
