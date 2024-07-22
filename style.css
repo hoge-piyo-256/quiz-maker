@@ -7,10 +7,28 @@
     --main-color: red;
 }
 
+* {
+    user-select: none;
+}
+
 body {
     background: var(--var-background);
     color: var(--var-foreground);
     margin: 0;
+}
+
+.checkbox {
+    accent-color: var(--var-second-color);
+}
+
+.button {
+    background: var(--var-second-color);
+    color: var(--var-foreground);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 100px;
+    display: block;
+    cursor: pointer;
 }
 
 .header {
@@ -35,6 +53,7 @@ body {
 .file-button {
     margin: auto 0;
     display: block;
+    cursor: pointer;
 }
 
 .file-button::file-selector-button {
@@ -46,14 +65,7 @@ body {
 }
 
 .change-quiz-button {
-    background: var(--var-second-color);
-    color: var(--var-foreground);
-    border: none;
-    padding: 5px 10px;
-    border-radius: 100px;
     margin: auto 0 auto auto;
-    display: block;
-    cursor: pointer;
 }
 
 .main {
@@ -63,7 +75,95 @@ body {
     box-sizing: border-box;
 }
 
+.menu-button {
+    position: relative;
+    background: white;
+    mask-image: url('menu.png');
+    mask-size: cover;
+    height: 100%;
+    width: auto;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+}
+
 .quiz-image {
     width: 100%;
     box-sizing: border-box;
+}
+
+.dialog-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    backdrop-filter: brightness(50%);
+    width: 100vw;
+    height: 100vh;
+    transition: all 0.25s 0s ease;
+}
+
+.dialog{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 50px);
+    height: calc(100% - 50px);
+    background: var(--var-background);
+    border-radius: 10px;
+    padding: 30px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.dialog-title-bar {
+    display: flex;
+}
+
+.dialog-close-button {
+    margin: auto 0 auto auto;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    background: white;
+    mask-image: url('close.png');
+    mask-size: cover;
+}
+
+.dialog-content {
+    overflow-y: scroll;
+    height: 100%;
+    scrollbar-width: none;
+}
+
+.dialog-section {
+    margin-bottom: 50px;
+}
+
+.dialog-section-title {
+    margin: 10px 0px;
+}
+
+.dialog-section>div>* {
+    margin-bottom: 20px;
+}
+
+.images-area {
+    width: 100%;
+}
+
+.dialog-image-list-bar {
+    width: 100%;
+    background: var(--var-second-color);
+    text-align: center;
+    cursor: pointer;
+}
+
+.invisible {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.hidden {
+    visibility: hidden;
 }

@@ -9,8 +9,8 @@
     <body>
         <!--ヘッダー-->
         <header class="header">
-                <input type="file" id="fileInput" multiple class="file-button">
-                <button class="change-quiz-button" id="changeQuizButton">次のクイズ</button>
+                <div id="menuButton" class="menu-button"></div>
+                <button class="button change-quiz-button" id="changeQuizButton">次のクイズ</button>
         </header>
         <!--ヘッダー部分の余白-->
         <div class="header-space"></div>
@@ -19,6 +19,34 @@
             <!--画像エリア-->
             <div>
                 <img src="default.png" alt="出題画像" class="quiz-image" id="quizImage">
+            </div>
+        </div>
+        <!--ダイアログ-->
+        <div class="dialog-container invisible" id="dialog">
+            <div class="dialog">
+                <div class="dialog-title-bar">
+                    <h1>各種設定</h1>
+                    <div class="dialog-close-button" id="closeButton"></div>
+                </div>
+                <div class="dialog-content">
+                    <div class="dialog-section">
+                        <h2 class="dialog-section-title">画像</h2>
+                        <div>
+                            <input type="file" id="fileInput" multiple class="file-button">
+                            <div class="dialog-image-list-bar hidden" id="beginBarButton">すべて表示</div>
+                            <div id="imagesArea" >
+                            </div>
+                            <div class="dialog-image-list-bar hidden" id="endBarButton">すべて表示</div>
+                        </div>
+                    </div>
+                    <div class="dialog-section">
+                        <h2 class="dialog-section-title">重複</h2>
+                        <div>
+                            <input type="checkbox" class="checkbox" name="notShowAlready" id="notShowAlready"><label for="notShowAlready">一度表示した画像は表示しない</label>
+                            <button class="button" id="resetAlreadyButton">一度表示した画像の情報をリセット</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <script src="script.js"></script>
