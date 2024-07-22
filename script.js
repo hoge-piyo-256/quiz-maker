@@ -5,12 +5,16 @@ const changeQuizButton = document.getElementById('changeQuizButton');
 changeQuizButton.onclick = changeQuiz;
 
 // Quizzes のデータ型
-// Index1: 画像ファイル File型 
-// Index2: 出題済みか   Boolean型
+// Index1: 画像のBlobURL String型 
+// Index2: 出題済みか Boolean型
 let quizzes = [];
 
 fileElem.onchange = (e) => {
     let files = [...fileElem.files];
+
+    quizzes.forEach((quiz) => {
+        URL.revokeObjectURL(quiz[0]);
+    });
 
     if(files.length === 0) {
         alert('少なくとも一件画像ファイルを指定してください。');
@@ -35,7 +39,7 @@ fileElem.onchange = (e) => {
     }
 
     quizzes = files.map((file) => {
-        return [file, false];
+        return [URL.createObjectURL(file), false];
     });
 }
 
@@ -45,7 +49,7 @@ function changeQuiz(excludeAlready = false) {
         alert('出題するクイズがありません');
         return;
     }
-    let blobUrl = URL.createObjectURL(quizSelection[random(0,quizSelection.length - 1)][0]);
+    let blobUrl = quizSelection[random(0,quizSelection.length - 1)][0];
     quizImageElem.src =  blobUrl;
 }
 
