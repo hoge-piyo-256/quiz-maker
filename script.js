@@ -170,7 +170,7 @@ function changeQuiz() {
 
 function createImageGrid() {
     // 横方向にいくつ並ぶか
-    const gridColumn = 3;
+    const gridColumn = Math.floor(imagesAreaElem.clientWidth / 100) < 1 ? 1 : Math.floor(imagesAreaElem.clientWidth / 100);
 
     // Border の色
     const borderColor = 'var(--var-second-color)';
@@ -178,7 +178,7 @@ function createImageGrid() {
     // Border の太さ
     const borderSize = '2px';
 
-    if(quizzes.length > 9) {
+    if(quizzes.length > gridColumn * 3) {
         beginBarButtonElem.classList.remove('hidden');
         endBarButtonElem.classList.remove('hidden');
     } else {
@@ -189,7 +189,7 @@ function createImageGrid() {
     beginBarButtonElem.innerText = showAll ? '一部のみ表示' : 'すべて表示';
     endBarButtonElem.innerText = showAll ? '一部のみ表示' : 'すべて表示';
 
-    let filteredQuizzes = showAll ? quizzes : quizzes.slice(0,9);
+    let filteredQuizzes = showAll ? quizzes : quizzes.slice(0,gridColumn * 3);
 
     // セル1つの横幅
     let gridWidth = imagesAreaElem.clientWidth / gridColumn;
