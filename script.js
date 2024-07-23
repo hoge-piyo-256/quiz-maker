@@ -138,7 +138,15 @@ loadButtonElem.onchange = (e) => {
                 if(elem[0].slice(0,11)) {errorMessage('INVALID_IMAGE_DATA_URL'); return;}
                 if(typeof elem[1] != 'boolean') {errorMessage('TYPE_NOT_BOOLEAN'); return;}
             })
-            quizzes = data;
+            quizzes = data.map((elem) => {
+                var binary = atob(elem[0].replace(/^.*,/, ''));
+                var buffer = new Uint8Array(binary.length);
+                for (var i = 0; i < binary.length; i++) {
+                    buffer[i] = binary.charCodeAt(i);
+                }
+                let file = new File([buffer.buffer], String(Date.now()) + Math.random() + '.png', {type: "image/png"});
+                return [URL.createObjectURL(file), elem[1], file];
+            });
         } catch {
             alert(errorMessage('JSON_PARSE_FAILED'));
         }
