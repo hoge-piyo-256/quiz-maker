@@ -32,7 +32,7 @@
                     <div class="dialog-section">
                         <h2 class="dialog-section-title">画像</h2>
                         <div>
-                            <input type="file" id="fileInput" multiple class="file-button">
+                            <button class="button file-button">ファイル選択<input type="file" id="fileInput" multiple class="file-input"></button>
                             <div class="dialog-image-list-bar hidden" id="beginBarButton">すべて表示</div>
                             <div id="imagesArea" >
                             </div>
@@ -44,6 +44,14 @@
                         <div>
                             <input type="checkbox" class="checkbox" name="notShowAlready" id="notShowAlready"><label for="notShowAlready">一度表示した画像は表示しない</label>
                             <button class="button" id="resetAlreadyButton">一度表示した画像の情報をリセット</button>
+                        </div>
+                    </div>
+                    <div class="dialog-section">
+                        <h2 class="dialog-section-title">セーブ / ロード</h2>
+                        <div>
+                            <p>画像と出題済の情報をセーブし、次回使う際にロードすると続きから再開できます。</p>
+                            <button class="button" id="saveButton">現在のデータをセーブ</button>
+                            <button class="button file-button"><input type="file" class="file-input" id="loadButton">現在のデータをロード</button>
                         </div>
                     </div>
                 </div>

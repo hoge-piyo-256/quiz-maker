@@ -50,20 +50,6 @@ body {
     padding: 5px;
 }
 
-.file-button {
-    margin: auto 0;
-    display: block;
-    cursor: pointer;
-}
-
-.file-button::file-selector-button {
-    background: var(--var-second-color);
-    color: var(--var-foreground);
-    border: none;
-    padding: 5px 10px;
-    border-radius: 100px;
-}
-
 .change-quiz-button {
     margin: auto 0 auto auto;
 }
@@ -159,11 +145,30 @@ body {
     cursor: pointer;
 }
 
+.file-button {
+    position: relative;
+    display: block;
+}
+
+.file-input {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.file-input::file-selector-button {
+    cursor: pointer;
+}
+
 .invisible {
     visibility: hidden;
     opacity: 0;
 }
 
 .hidden {
-    visibility: hidden;
+    display: none;
 }

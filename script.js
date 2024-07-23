@@ -10,6 +10,8 @@ const notShowAlreadyElem = document.getElementById('notShowAlready');
 
 const beginBarButtonElem = document.getElementById('beginBarButton');
 const endBarButtonElem = document.getElementById('endBarButton');
+const saveButtonElem = document.getElementById('saveButton');
+const loadButtonElem = document.getElementById('loadButton');
 
 beginBarButtonElem.onclick = toggleShowAll;
 endBarButtonElem.onclick = toggleShowAll;
@@ -18,8 +20,14 @@ changeQuizButtonElem.onclick = changeQuiz;
 // Quizzes のデータ型
 // Index1: 画像のBlobURL String型 
 // Index2: 出題済みか Boolean型
+// Index3: 画像ファイル File型
 let quizzes = [];
 let showAll = false;
+
+// saveData のデータ型
+// Index1: Base64形式の画像ファイル String型
+// index2: 出題済みか Boolean型
+let saveData = [];
 
 fileElem.onchange = (e) => {
     let files = [...fileElem.files];
@@ -51,8 +59,8 @@ fileElem.onchange = (e) => {
         alert(`画像以外のファイルが${oldFiles.length - files.length}件含まれていたため除外しました。`);
     }
 
-    quizzes = files.map((file) => {
-        return [URL.createObjectURL(file), false];
+    quizzes = files.map((file, index) => {
+        return [URL.createObjectURL(file), false, files[index]];
     });
 
     createImageGrid();
@@ -77,6 +85,64 @@ resetAlreadyButtonElem.onclick = (e) => {
         quizzes = quizzes.map((quiz) => {
             return [quiz[0], false];
         });
+        createImageGrid();
+    }
+}
+
+saveButtonElem.onclick = async (e) => {
+    let convertBlobUrlToBase64 = async (blobUrl) => {
+        let reader = new FileReader();
+        reader.readAsDataURL(blobUrl);
+        let result = await new Promise((resolve) => {
+            reader.onload = () => {
+                resolve(reader.result);
+            }
+        });
+        return result;
+    }
+    
+    let saveData = await Promise.all(quizzes.map(async (quiz) => {
+        return [await convertBlobUrlToBase64(quiz[2]), quiz[1]];
+    }));
+    
+    let json = JSON.stringify(saveData);
+
+    let blob = new Blob([json], { type: 'text/plain' });
+    let blobUrl = window.URL.createObjectURL(blob);
+    let link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = 'QuizData.txt';
+    link.click();
+
+    URL.revokeObjectURL(blobUrl);
+}
+
+loadButtonElem.onchange = (e) => {
+    let file = [...loadButtonElem.files][0];
+    
+    const errorMessage = (errorCode = 'UNKNOWN') => {return 'ファイル正しく読み込めませんでした。\r\n正しいファイルが指定されているか確認してください。\r\nErrorCode: ' + errorCode};
+
+    let reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = () => {
+        let json = reader.result;
+        try {
+            let data = JSON.parse(json);
+            // データ破損チェック
+            if(!data) {errorMessage('NULL_OR_EMPTY_DATA'); return;}
+            if(!Array.isArray(data)) {errorMessage('NOT_ARRAY_DATA'); return;}
+            data.forEach((elem) => {
+                if(!Array.isArray(elem)) {errorMessage('NOT_TWO_DIMENTIONAL_ARRAY_DATA'); return;}
+                if(elem.length != 2) {errorMessage('INVALID_ARRAY_LENGTH'); return;}
+                if(typeof elem[0] != 'string') {errorMessage('INVALID_IMAGE_DATA_TYPE'); return;}
+                if(elem[0].slice(0,11)) {errorMessage('INVALID_IMAGE_DATA_URL'); return;}
+                if(typeof elem[1] != 'boolean') {errorMessage('TYPE_NOT_BOOLEAN'); return;}
+            })
+            quizzes = data;
+        } catch {
+            alert(errorMessage('JSON_PARSE_FAILED'));
+        }
+
         createImageGrid();
     }
 }
