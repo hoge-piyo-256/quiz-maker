@@ -48,6 +48,7 @@ body {
     top: 0;
     left: 0;
     padding: 5px;
+    box-sizing: border-box;
 }
 
 .change-quiz-button {
@@ -57,7 +58,7 @@ body {
 .main {
     padding: 5px;
     width: 100vw;
-    height: max-content;
+    height: calc(100vh - var(--var-header-height));
     box-sizing: border-box;
 }
 
@@ -74,6 +75,11 @@ body {
 
 .quiz-image {
     width: 100%;
+    height: 100%;
+    background: url(default.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
     box-sizing: border-box;
 }
 
