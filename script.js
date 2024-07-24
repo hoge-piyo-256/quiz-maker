@@ -144,7 +144,7 @@ loadButtonElem.onchange = (e) => {
                 for (var i = 0; i < binary.length; i++) {
                     buffer[i] = binary.charCodeAt(i);
                 }
-                let file = new File([buffer.buffer], String(Date.now()) + Math.random() + '.png', {type: "image/png"});
+                let file = new File([buffer.buffer], String(Date.now()) + Math.random() + '.jpeg', {type: "image/jpeg"});
                 return [URL.createObjectURL(file), elem[1], file];
             });
         } catch {
@@ -165,7 +165,7 @@ function changeQuiz() {
     let index = random(0,quizSelection.length - 1);
     quizSelection[index][1] = true;;
     let blobUrl = quizSelection[index][0];
-    quizImageElem.src =  blobUrl;
+    quizImageElem.style.backgroundImage =  `url(${blobUrl})`;
 }
 
 function createImageGrid() {
