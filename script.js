@@ -169,6 +169,9 @@ function changeQuiz() {
 }
 
 function createImageGrid() {
+    // 何行までなら省略せずに表示するか
+    const defaultRow = 2;
+
     // 横方向にいくつ並ぶか
     const gridColumn = Math.floor(imagesAreaElem.clientWidth / 100) < 1 ? 1 : Math.floor(imagesAreaElem.clientWidth / 100);
 
@@ -178,7 +181,7 @@ function createImageGrid() {
     // Border の太さ
     const borderSize = '2px';
 
-    if(quizzes.length > gridColumn * 3) {
+    if(quizzes.length > gridColumn * defaultRow) {
         beginBarButtonElem.classList.remove('hidden');
         endBarButtonElem.classList.remove('hidden');
     } else {
@@ -189,7 +192,7 @@ function createImageGrid() {
     beginBarButtonElem.innerText = showAll ? '一部のみ表示' : 'すべて表示';
     endBarButtonElem.innerText = showAll ? '一部のみ表示' : 'すべて表示';
 
-    let filteredQuizzes = showAll ? quizzes : quizzes.slice(0,gridColumn * 3);
+    let filteredQuizzes = showAll ? quizzes : quizzes.slice(0,gridColumn * defaultRow);
 
     // セル1つの横幅
     let gridWidth = imagesAreaElem.clientWidth / gridColumn;
