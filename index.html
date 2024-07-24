@@ -57,6 +57,19 @@
                         <h2 class="dialog-section-title">アクセシビリティ</h2>
                         <input type="checkbox" class="checkbox" name="moveHeaderToBottom" id="moveHeaderToBottom"><label for="moveHeaderToBottom">ツールバーを下に表示する</label>
                     </div>
+                    <div class="dialog-section">
+                        <h2 class="dialog-section-title">実験的な機能</h2>
+                        <input type="checkbox" class="checkbox" name="showExperimental" id="showExperimental"><label for="showExperimental">実験的な機能の設定を表示</label>
+                        <div id="experimentalZone" class="experimental-zone hidden">
+                            <h3>⚠ 実験的な機能</h3>
+                            <p>
+                                Local Storage を使うことで自動的に画像・出題済みの情報を自動保存し、次回使用時に途中から再開できます。<br>
+                                しかし、Local Storage は不安定であり、自動保存したデータのサイズが大きくなりすぎると正常に動作しなくなります。<br>
+                                また、Safari ブラウザを使用している場合 Safari が7日間で勝手にデータを削除することがあります。
+                            </p>
+                            <input type="checkbox" class="checkbox" name="useLocalStorage" id="useLocalStorage"><label for="useLocalStorage">Local Storage を使用する</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -10,6 +10,9 @@ const notShowAlreadyElem = document.getElementById('notShowAlready');
 const moveHeaderToBottomElem = document.getElementById('moveHeaderToBottom');
 const headerElem = document.getElementById('header');
 const headerSpaceElem = document.getElementById('headerSpace');
+const showExperimentalElem = document.getElementById('showExperimental');
+const experimentalZoneElem = document.getElementById('experimentalZone');
+const useLocalStorageElem = document.getElementById('useLocalStorage');
 
 const beginBarButtonElem = document.getElementById('beginBarButton');
 const endBarButtonElem = document.getElementById('endBarButton');
@@ -19,6 +22,54 @@ const loadButtonElem = document.getElementById('loadButton');
 beginBarButtonElem.onclick = toggleShowAll;
 endBarButtonElem.onclick = toggleShowAll;
 changeQuizButtonElem.onclick = changeQuiz;
+
+// Local Storage が有効である場合、Local Storage からデータの復元を試みる
+window.onload = (e) => {
+    notShowAlreadyElem.checked = localStorage.getItem('quiz-maker_notShowAlready') == 'true';
+    moveHeaderToBottomElem.checked = localStorage.getItem('quiz-maker_moveHeaderToBottom') == 'true';
+    moveHeader();
+
+
+    // LocalStorage が有効か確認し、有効の場合設定の実験的な機能も有効に
+    if(localStorage.getItem('quiz-maker_enabled') === 'true') {
+        showExperimentalElem.checked = true;
+        experimentalZoneElem.classList.remove('hidden');
+        useLocalStorageElem.checked = true;
+    }
+
+    if(localStorage.getItem('quiz-maker_enabled') === 'true') {
+        let json = localStorage.getItem('quiz-maker_data');
+
+        const errorMessage = (errorCode = 'UNKNOWN') => {return 'Local Storage を正しく読み込めませんでした。\r\nこのメッセージが毎回表示される場合、Local Storage をオフにしてください。\r\nErrorCode: ' + errorCode};
+
+        try {
+            let data = JSON.parse(json);
+            // データ破損チェック
+            if(!data) {errorMessage('NULL_OR_EMPTY_DATA'); return;}
+            if(!Array.isArray(data)) {errorMessage('NOT_ARRAY_DATA'); return;}
+            data.forEach((elem) => {
+                if(!Array.isArray(elem)) {errorMessage('NOT_TWO_DIMENTIONAL_ARRAY_DATA'); return;}
+                if(elem.length != 2) {errorMessage('INVALID_ARRAY_LENGTH'); return;}
+                if(typeof elem[0] != 'string') {errorMessage('INVALID_IMAGE_DATA_TYPE'); return;}
+                if(elem[0].slice(0,11)) {errorMessage('INVALID_IMAGE_DATA_URL'); return;}
+                if(typeof elem[1] != 'boolean') {errorMessage('TYPE_NOT_BOOLEAN'); return;}
+            })
+            quizzes = data.map((elem) => {
+                var binary = atob(elem[0].replace(/^.*,/, ''));
+                var buffer = new Uint8Array(binary.length);
+                for (var i = 0; i < binary.length; i++) {
+                    buffer[i] = binary.charCodeAt(i);
+                }
+                let file = new File([buffer.buffer], String(Date.now()) + Math.random() + '.png', {type: "image/png"});
+                return [URL.createObjectURL(file), elem[1], file];
+            });
+        } catch {
+            alert(errorMessage('JSON_PARSE_FAILED'));
+        }
+
+        createImageGrid();
+    }
+}
 
 // Quizzes のデータ型
 // Index1: 画像のBlobURL String型 
@@ -67,6 +118,8 @@ fileElem.onchange = (e) => {
     });
 
     createImageGrid();
+
+    saveToLocalStorage();
 }
 
 menuButtonElem.onclick = (e) => {
@@ -79,16 +132,23 @@ closeButtonElem.onclick = (e) => {
 }
 
 dialogElem.onclick = (e) => {
-    if(e.target == dialogElem) dialogElem.classList.toggle('invisible');
+   if(e.target == dialogElem) dialogElem.classList.toggle('invisible');
+}
+
+notShowAlreadyElem.onchange = (e) => {
+    
+    localStorage.setItem('quiz-maker_notShowAlready', String(notShowAlreadyElem.checked));
 }
 
 resetAlreadyButtonElem.onclick = (e) => {
     const confirmText = '出題済をリセットし、既に表示した画像がまた表示されるようになります。\r\nこの操作は取り消せません。\r\n本当にリセットしますか?';
     if(confirm(confirmText)) {
         quizzes = quizzes.map((quiz) => {
-            return [quiz[0], false];
+            return [quiz[0], false, quiz[2]];
         });
         createImageGrid();
+
+        saveToLocalStorage();
     }
 }
 
@@ -147,7 +207,7 @@ loadButtonElem.onchange = (e) => {
                 for (var i = 0; i < binary.length; i++) {
                     buffer[i] = binary.charCodeAt(i);
                 }
-                let file = new File([buffer.buffer], String(Date.now()) + Math.random() + '.jpeg', {type: "image/jpeg"});
+                let file = new File([buffer.buffer], String(Date.now()) + Math.random() + '.png', {type: "image/png"});
                 return [URL.createObjectURL(file), elem[1], file];
             });
         } catch {
@@ -158,15 +218,35 @@ loadButtonElem.onchange = (e) => {
     }
 }
 
-moveHeaderToBottomElem.onchange = (e) => {
-    if(moveHeaderToBottom.checked) {
-        headerElem.classList.remove('header-top');
-        headerElem.classList.add('header-bottom');
-        headerSpaceElem.classList.add('hidden');
+moveHeaderToBottomElem.onchange = ()=> {
+    localStorage.setItem('quiz-maker_moveHeaderToBottom', String(moveHeaderToBottomElem.checked));
+    moveHeader();
+}
+
+showExperimentalElem.onchange = (e) => {
+    if(showExperimentalElem.checked) {
+        const warningMessage = 'この機能は実験的な機能であり、正確に動作する保証はありません。\r\n本当に有効にしますか?';
+        showExperimentalElem.checked = confirm(warningMessage);
+    }
+    if(showExperimentalElem.checked) {
+        experimentalZoneElem.classList.remove('hidden');
     } else {
-        headerElem.classList.add('header-top');
-        headerElem.classList.remove('header-bottom');
-        headerSpaceElem.classList.remove('hidden');
+        experimentalZoneElem.classList.add('hidden');
+        useLocalStorageElem.checked = false;
+        localStorage.setItem('quiz-maker_enabled','false');
+    }
+}
+
+useLocalStorageElem.onchange = (e) => {
+    if(useLocalStorage.checked) {
+        const warningMessage = 'Local Storage のデータは確認なしに自動で消える可能性があります。\r\nデータを失いたくない場合、手動のデータのセーブ機能を使用してください。\r\n本当に有効にしますか?';
+        useLocalStorage.checked = confirm(warningMessage);
+    }
+    if(useLocalStorage.checked) {
+        localStorage.setItem('quiz-maker_enabled','true');
+        saveToLocalStorage();
+    } else {
+        localStorage.setItem('quiz-maker_enabled','false');
     }
 }
 
@@ -181,6 +261,8 @@ function changeQuiz() {
     quizSelection[index][1] = true;
     let blobUrl = quizSelection[index][0];
     quizImageElem.style.backgroundImage =  `url(${blobUrl})`;
+
+    saveToLocalStorage();
 }
 
 function createImageGrid() {
@@ -247,6 +329,41 @@ function createImageGrid() {
 function toggleShowAll() {
     showAll = !showAll;
     createImageGrid();
+}
+
+function moveHeader() {
+    if(moveHeaderToBottom.checked) {
+        headerElem.classList.remove('header-top');
+        headerElem.classList.add('header-bottom');
+        headerSpaceElem.classList.add('hidden');
+    } else {
+        headerElem.classList.add('header-top');
+        headerElem.classList.remove('header-bottom');
+        headerSpaceElem.classList.remove('hidden');
+    }
+}
+
+async function saveToLocalStorage() {
+    if(localStorage.getItem('quiz-maker_enabled')) {
+        let convertBlobUrlToBase64 = async (blobUrl) => {
+            let reader = new FileReader();
+            reader.readAsDataURL(blobUrl);
+            let result = await new Promise((resolve) => {
+                reader.onload = () => {
+                    resolve(reader.result);
+                }
+            });
+            return result;
+        }
+        
+        let saveData = await Promise.all(quizzes.map(async (quiz) => {
+            return [await convertBlobUrlToBase64(quiz[2]), quiz[1]];
+        }));
+        
+        let json = JSON.stringify(saveData);
+
+        localStorage.setItem('quiz-maker_data', json);
+    }
 }
 
 function random(min, max) {

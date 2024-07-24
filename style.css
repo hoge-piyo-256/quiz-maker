@@ -177,6 +177,13 @@ body {
     cursor: pointer;
 }
 
+.experimental-zone {
+    background: var(--var-first-color);
+    padding: 10px;
+    border: var(--var-second-color) 3px solid;
+    border-radius: 10px;
+}
+
 .invisible {
     visibility: hidden;
     opacity: 0;
