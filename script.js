@@ -7,6 +7,9 @@ const closeButtonElem = document.getElementById('closeButton');
 const dialogElem = document.getElementById('dialog');
 const menuButtonElem = document.getElementById('menuButton');
 const notShowAlreadyElem = document.getElementById('notShowAlready');
+const moveHeaderToBottomElem = document.getElementById('moveHeaderToBottom');
+const headerElem = document.getElementById('header');
+const headerSpaceElem = document.getElementById('headerSpace');
 
 const beginBarButtonElem = document.getElementById('beginBarButton');
 const endBarButtonElem = document.getElementById('endBarButton');
@@ -155,6 +158,18 @@ loadButtonElem.onchange = (e) => {
     }
 }
 
+moveHeaderToBottomElem.onchange = (e) => {
+    if(moveHeaderToBottom.checked) {
+        headerElem.classList.remove('header-top');
+        headerElem.classList.add('header-bottom');
+        headerSpaceElem.classList.add('hidden');
+    } else {
+        headerElem.classList.add('header-top');
+        headerElem.classList.remove('header-bottom');
+        headerSpaceElem.classList.remove('hidden');
+    }
+}
+
 function changeQuiz() {
     excludeAlready = notShowAlreadyElem.checked;
     let quizSelection = excludeAlready ? quizzes.filter((quiz) => {return !quiz[1]}) : quizzes;
@@ -163,7 +178,7 @@ function changeQuiz() {
         return;
     }
     let index = random(0,quizSelection.length - 1);
-    quizSelection[index][1] = true;;
+    quizSelection[index][1] = true;
     let blobUrl = quizSelection[index][0];
     quizImageElem.style.backgroundImage =  `url(${blobUrl})`;
 }

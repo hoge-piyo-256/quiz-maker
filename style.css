@@ -36,11 +36,18 @@ body {
     height: var(--var-header-height);
     width: 100vw;
     position: fixed;
-    top: 0;
     left: 0;
     padding: 5px 10px;
     box-sizing: border-box;
     display: flex;
+}
+
+.header-top {
+    top: 0;
+}
+
+.header-bottom {
+    bottom: 0;
 }
 
 .header-space {
