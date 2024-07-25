@@ -131,9 +131,16 @@ fileElem.onchange = (e) => {
         alert(`画像以外のファイルが${oldFiles.length - files.length}件含まれていたため除外しました。`);
     }
 
-    quizzes = files.map((file, index) => {
+    if(quizzes.length != 0) {
+        const text = '既に読み込んである画像があります。\r\nこれらの画像を保持したまま今回選択した画像を追加しますか?';
+        if(!confirm(text)) {
+            quizzes = [];
+        }
+    }
+
+    quizzes = quizzes.concat(files.map((file, index) => {
         return [URL.createObjectURL(file), false, files[index]];
-    });
+    }));
 
     createImageGrid();
 
