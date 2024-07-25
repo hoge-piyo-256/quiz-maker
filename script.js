@@ -17,7 +17,7 @@ const miniDialogElem = document.getElementById('miniDialog');
 const miniDialogImageElem = document.getElementById('miniDialogImage');
 const miniDialogDeleteElem = document.getElementById('miniDialogDelete');
 const miniDialogCancelElem = document.getElementById('miniDialogCancel')
-
+const DeleteAllImageButtonElem = document.getElementById('deleteAllImageButton');
 
 const beginBarButtonElem = document.getElementById('beginBarButton');
 const endBarButtonElem = document.getElementById('endBarButton');
@@ -88,6 +88,19 @@ let showAll = false;
 // index2: 出題済みか Boolean型
 let saveData = [];
 
+menuButtonElem.onclick = (e) => {
+    dialogElem.classList.toggle('invisible');
+    createImageGrid();
+}
+
+closeButtonElem.onclick = (e) => {
+    dialogElem.classList.toggle('invisible');
+}
+
+dialogElem.onclick = (e) => {
+   if(e.target == dialogElem) dialogElem.classList.toggle('invisible');
+}
+
 fileElem.onchange = (e) => {
     let files = [...fileElem.files];
 
@@ -129,17 +142,15 @@ fileElem.onchange = (e) => {
     fileElem.value = '';
 }
 
-menuButtonElem.onclick = (e) => {
-    dialogElem.classList.toggle('invisible');
-    createImageGrid();
-}
-
-closeButtonElem.onclick = (e) => {
-    dialogElem.classList.toggle('invisible');
-}
-
-dialogElem.onclick = (e) => {
-   if(e.target == dialogElem) dialogElem.classList.toggle('invisible');
+DeleteAllImageButtonElem.onclick = (e) => {
+    const text = '画像を全て削除します。\r\nこの操作は取り消せません。\r\nよろしいですか?'
+    if(confirm(text)) {
+        quizzes.forEach((quiz) => {
+            URL.revokeObjectURL(quiz[0]);
+        });
+        quizzes = [];
+        createImageGrid();
+    }
 }
 
 notShowAlreadyElem.onchange = (e) => {
@@ -356,7 +367,7 @@ function moveHeader() {
 }
 
 async function saveToLocalStorage() {
-    if(localStorage.getItem('quiz-maker_enabled')) {
+    if(localStorage.getItem('quiz-maker_enabled') == 'true') {
         let convertBlobUrlToBase64 = async (blobUrl) => {
             let reader = new FileReader();
             reader.readAsDataURL(blobUrl);
