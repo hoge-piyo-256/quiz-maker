@@ -13,6 +13,11 @@ const headerSpaceElem = document.getElementById('headerSpace');
 const showExperimentalElem = document.getElementById('showExperimental');
 const experimentalZoneElem = document.getElementById('experimentalZone');
 const useLocalStorageElem = document.getElementById('useLocalStorage');
+const miniDialogElem = document.getElementById('miniDialog');
+const miniDialogImageElem = document.getElementById('miniDialogImage');
+const miniDialogDeleteElem = document.getElementById('miniDialogDelete');
+const miniDialogCancelElem = document.getElementById('miniDialogCancel')
+
 
 const beginBarButtonElem = document.getElementById('beginBarButton');
 const endBarButtonElem = document.getElementById('endBarButton');
@@ -53,7 +58,7 @@ window.onload = (e) => {
                 if(typeof elem[0] != 'string') {errorMessage('INVALID_IMAGE_DATA_TYPE'); return;}
                 if(elem[0].slice(0,11)) {errorMessage('INVALID_IMAGE_DATA_URL'); return;}
                 if(typeof elem[1] != 'boolean') {errorMessage('TYPE_NOT_BOOLEAN'); return;}
-            })
+            });
             quizzes = data.map((elem) => {
                 var binary = atob(elem[0].replace(/^.*,/, ''));
                 var buffer = new Uint8Array(binary.length);
@@ -120,6 +125,8 @@ fileElem.onchange = (e) => {
     createImageGrid();
 
     saveToLocalStorage();
+
+    fileElem.value = '';
 }
 
 menuButtonElem.onclick = (e) => {
@@ -136,7 +143,6 @@ dialogElem.onclick = (e) => {
 }
 
 notShowAlreadyElem.onchange = (e) => {
-    
     localStorage.setItem('quiz-maker_notShowAlready', String(notShowAlreadyElem.checked));
 }
 
@@ -200,7 +206,7 @@ loadButtonElem.onchange = (e) => {
                 if(typeof elem[0] != 'string') {errorMessage('INVALID_IMAGE_DATA_TYPE'); return;}
                 if(elem[0].slice(0,11)) {errorMessage('INVALID_IMAGE_DATA_URL'); return;}
                 if(typeof elem[1] != 'boolean') {errorMessage('TYPE_NOT_BOOLEAN'); return;}
-            })
+            });
             quizzes = data.map((elem) => {
                 var binary = atob(elem[0].replace(/^.*,/, ''));
                 var buffer = new Uint8Array(binary.length);
@@ -215,6 +221,8 @@ loadButtonElem.onchange = (e) => {
         }
 
         createImageGrid();
+
+        loadButtonElem.value = '';
     }
 }
 
@@ -313,6 +321,10 @@ function createImageGrid() {
         cell.style.borderBottom = borderSize;
         cell.style.borderColor = borderColor;
         cell.style.borderStyle = 'solid';
+        cell.dataset.blobUrl = quiz[0];
+        cell.onclick = (e) => {
+            openMiniDialog(e.target.dataset.blobUrl);
+        }
         gridContainer.appendChild(cell);
 
         let already = document.createElement('div');
@@ -320,7 +332,7 @@ function createImageGrid() {
         already.style.width = 'max-content';
         already.innerText = '出題済';
         if(quiz[1]) cell.appendChild(already);
-    })
+    });
     
     imagesAreaElem.innerHTML = '';
     imagesAreaElem.appendChild(gridContainer);
@@ -363,6 +375,22 @@ async function saveToLocalStorage() {
         let json = JSON.stringify(saveData);
 
         localStorage.setItem('quiz-maker_data', json);
+    }
+}
+
+function openMiniDialog(blobUrl) {
+    miniDialogImageElem.src = blobUrl;
+    miniDialogElem.classList.remove('invisible');
+    miniDialogDeleteElem.onclick = (e) => {
+        quizzes = quizzes.filter((quiz) => {
+            return quiz[0] != blobUrl;
+        });
+        URL.revokeObjectURL(blobUrl);
+        createImageGrid();
+        miniDialogElem.classList.add('invisible');
+    }
+    miniDialogCancelElem.onclick = (e) => {
+        miniDialogElem.classList.add('invisible');
     }
 }
 
