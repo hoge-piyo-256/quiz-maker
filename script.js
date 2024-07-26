@@ -20,6 +20,7 @@ const miniDialogDeleteElem = document.getElementById('miniDialogDelete');
 const miniDialogCancelElem = document.getElementById('miniDialogCancel')
 const deleteAllImageButtonElem = document.getElementById('deleteAllImageButton');
 const colorRangeElem = document.getElementById('colorRange');
+const themeSelectElem = document.getElementById('themeSelect');
 
 const beginBarButtonElem = document.getElementById('beginBarButton');
 const endBarButtonElem = document.getElementById('endBarButton');
@@ -29,14 +30,16 @@ const loadButtonElem = document.getElementById('loadButton');
 beginBarButtonElem.onclick = toggleShowAll;
 endBarButtonElem.onclick = toggleShowAll;
 changeQuizButtonElem.onclick = changeQuiz;
-colorRangeElem.oninput = changeColor;
+colorRangeElem.oninput = refreshColorTheme;
+themeSelectElem.onchange = refreshColorTheme;
 
 // Local Storage が有効である場合、Local Storage からデータの復元を試みる
 window.onload = (e) => {
     notShowAlreadyElem.checked = localStorage.getItem('quiz-maker_notShowAlready') == 'true';
     moveHeaderToBottomElem.checked = localStorage.getItem('quiz-maker_moveHeaderToBottom') == 'true';
-    colorRangeElem.value = Number(localStorage.getItem('quiz-maker_colorRange'));
-    changeColor();
+    colorRangeElem.value = Number(localStorage.getItem('quiz-maker_colorRange') ?? 0);
+    themeSelectElem.value = localStorage.getItem('quiz-maker_themeSelect') ?? 'default';
+    refreshColorTheme();
     moveHeader();
 
 
@@ -368,11 +371,33 @@ function toggleShowAll() {
     createImageGrid();
 }
 
-function changeColor() {
+function refreshColorTheme() {
     let degree = colorRangeElem.value;
     localStorage.setItem('quiz-maker_colorRange', String(degree));
-    document.querySelector(':root').style.setProperty('--first-color',`hsl(${degree}deg, 100%, 20%)`);
-    document.querySelector(':root').style.setProperty('--second-color',`hsl(${degree}deg, 100%, 33%)`);
+    
+    let theme = themeSelectElem.value;
+    localStorage.setItem('quiz-maker_themeSelect', theme);
+    
+    if(theme == 'light' || (theme == 'default' && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+        // ライトテーマ
+        document.querySelector(':root').style.setProperty('--background', 'white');
+        document.querySelector(':root').style.setProperty('--foreground', 'black');
+        document.querySelector(':root').style.setProperty('--accent-foreground', 'white');
+        document.querySelector(':root').style.setProperty('--first-color',`hsl(${degree}deg, 100%, 20%)`);
+        document.querySelector(':root').style.setProperty('--second-color',`hsl(${degree}deg, 100%, 30%)`);
+    } else if(theme == 'dark' || (theme == 'default' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        // ダークテーマ
+        document.querySelector(':root').style.setProperty('--background', '#1f1f1f');
+        document.querySelector(':root').style.setProperty('--foreground', 'white');
+        document.querySelector(':root').style.setProperty('--first-color',`hsl(${degree}deg, 100%, 20%)`);
+        document.querySelector(':root').style.setProperty('--second-color',`hsl(${degree}deg, 100%, 30%)`);
+    } else {
+        // テーマの設定が「端末の設定に従う」かつ、matchMeadia が機能しなかった場合、ダークテーマに
+        document.querySelector(':root').style.setProperty('--background', '#1f1f1f');
+        document.querySelector(':root').style.setProperty('--foreground', 'white');
+        document.querySelector(':root').style.setProperty('--first-color',`hsl(${degree}deg, 100%, 20%)`);
+        document.querySelector(':root').style.setProperty('--second-color',`hsl(${degree}deg, 100%, 30%)`);
+    }
 }
 
 function moveHeader() {

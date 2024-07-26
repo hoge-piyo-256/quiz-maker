@@ -2,8 +2,9 @@
     --header-height: 50px;
     --background: #1f1f1f;
     --foreground: white;
+    --accent-foreground: white;
     --first-color: hsl(0, 100%, 20%);
-    --second-color: hsl(0, 100%, 33%);
+    --second-color: hsl(0, 100%, 30%);
 }
 
 * {
@@ -22,12 +23,20 @@ body {
 
 .button {
     background: var(--second-color);
-    color: var(--foreground);
+    color: var(--accent-foreground);
     border: none;
     padding: 5px 10px;
     border-radius: 100px;
     display: block;
     cursor: pointer;
+}
+
+.select-box {
+    background: var(--second-color);
+    padding: 5px 10px;
+    color: var(--accent-foreground);
+    border: none;
+    border-radius: 100px;
 }
 
 .header {
@@ -71,7 +80,7 @@ body {
 
 .menu-button {
     position: relative;
-    background: white;
+    background: var(--accent-foreground);
     mask-image: url('menu.png');
     mask-size: cover;
     height: 100%;
@@ -131,7 +140,7 @@ body {
     width: 30px;
     height: 30px;
     cursor: pointer;
-    background: white;
+    background: var(--foreground);
     mask-image: url('close.png');
     mask-size: cover;
 }
@@ -161,6 +170,7 @@ body {
 .dialog-image-list-bar {
     width: 100%;
     background: var(--second-color);
+    color: var(--accent-foreground);
     text-align: center;
     cursor: pointer;
 }
