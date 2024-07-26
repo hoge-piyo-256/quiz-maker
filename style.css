@@ -102,7 +102,7 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 80%;
+    width: fit-content;
     transform: translate(-50%, -50%);
 }
 
