@@ -65,7 +65,7 @@ body {
 .main {
     padding: 5px;
     width: 100vw;
-    height: calc(100vh - var(--var-header-height));
+    height: calc(100dvh - var(--var-header-height));
     box-sizing: border-box;
 }
 
