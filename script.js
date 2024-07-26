@@ -1,5 +1,6 @@
 const fileElem = document.getElementById('fileInput');
 const quizImageElem = document.getElementById('quizImage');
+const quizNoImageElem = document.getElementById('quizNoImage');
 const changeQuizButtonElem = document.getElementById('changeQuizButton');
 const resetAlreadyButtonElem = document.getElementById('resetAlreadyButton');
 const imagesAreaElem = document.getElementById('imagesArea');
@@ -17,7 +18,8 @@ const miniDialogElem = document.getElementById('miniDialog');
 const miniDialogImageElem = document.getElementById('miniDialogImage');
 const miniDialogDeleteElem = document.getElementById('miniDialogDelete');
 const miniDialogCancelElem = document.getElementById('miniDialogCancel')
-const DeleteAllImageButtonElem = document.getElementById('deleteAllImageButton');
+const deleteAllImageButtonElem = document.getElementById('deleteAllImageButton');
+const colorRangeElem = document.getElementById('colorRange');
 
 const beginBarButtonElem = document.getElementById('beginBarButton');
 const endBarButtonElem = document.getElementById('endBarButton');
@@ -27,11 +29,14 @@ const loadButtonElem = document.getElementById('loadButton');
 beginBarButtonElem.onclick = toggleShowAll;
 endBarButtonElem.onclick = toggleShowAll;
 changeQuizButtonElem.onclick = changeQuiz;
+colorRangeElem.onclick = changeColor;
 
 // Local Storage が有効である場合、Local Storage からデータの復元を試みる
 window.onload = (e) => {
     notShowAlreadyElem.checked = localStorage.getItem('quiz-maker_notShowAlready') == 'true';
     moveHeaderToBottomElem.checked = localStorage.getItem('quiz-maker_moveHeaderToBottom') == 'true';
+    colorRangeElem.value = Number(localStorage.getItem('quiz-maker_colorRange'));
+    changeColor();
     moveHeader();
 
 
@@ -149,7 +154,7 @@ fileElem.onchange = (e) => {
     fileElem.value = '';
 }
 
-DeleteAllImageButtonElem.onclick = (e) => {
+deleteAllImageButtonElem.onclick = (e) => {
     const text = '画像を全て削除します。\r\nこの操作は取り消せません。\r\nよろしいですか?'
     if(confirm(text)) {
         quizzes.forEach((quiz) => {
@@ -244,7 +249,7 @@ loadButtonElem.onchange = (e) => {
     }
 }
 
-moveHeaderToBottomElem.onchange = ()=> {
+moveHeaderToBottomElem.onchange = (e)=> {
     localStorage.setItem('quiz-maker_moveHeaderToBottom', String(moveHeaderToBottomElem.checked));
     moveHeader();
 }
@@ -288,6 +293,8 @@ function changeQuiz() {
     let blobUrl = quizSelection[index][0];
     quizImageElem.style.backgroundImage =  `url(${blobUrl})`;
 
+    quizNoImageElem.remove();
+
     saveToLocalStorage();
 }
 
@@ -299,7 +306,7 @@ function createImageGrid() {
     const gridColumn = Math.floor(imagesAreaElem.clientWidth / 100) < 1 ? 1 : Math.floor(imagesAreaElem.clientWidth / 100);
 
     // Border の色
-    const borderColor = 'var(--var-second-color)';
+    const borderColor = 'var(--second-color)';
 
     // Border の太さ
     const borderSize = '2px';
@@ -359,6 +366,13 @@ function createImageGrid() {
 function toggleShowAll() {
     showAll = !showAll;
     createImageGrid();
+}
+
+function changeColor() {
+    let degree = colorRangeElem.value;
+    localStorage.setItem('quiz-maker_colorRange', String(degree));
+    document.querySelector(':root').style.setProperty('--first-color',`hsl(${degree}deg, 100%, 20%)`);
+    document.querySelector(':root').style.setProperty('--second-color',`hsl(${degree}deg, 100%, 33%)`);
 }
 
 function moveHeader() {

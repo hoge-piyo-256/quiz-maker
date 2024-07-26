@@ -18,7 +18,8 @@
         <!--メインコンテンツ-->
         <div class="main">
             <!--画像エリア-->
-            <div src="default.png" alt="出題画像" class="quiz-image" id="quizImage">
+            <div src="" alt="出題画像" class="quiz-image" id="quizImage"></div>
+            <div class="quiz-noimage" id="quizNoImage">右上のメニューから画像を選択し、左上の「次のクイズ」を押してください。</div>
         </div>
         <!--ダイアログ-->
         <div class="dialog-container invisible" id="dialog">
@@ -56,7 +57,10 @@
                     </div>
                     <div class="dialog-section">
                         <h2 class="dialog-section-title">アクセシビリティ</h2>
-                        <input type="checkbox" class="checkbox" name="moveHeaderToBottom" id="moveHeaderToBottom"><label for="moveHeaderToBottom">ツールバーを下に表示する</label>
+                        <div>
+                            <div><label><input type="range" class="range" id="colorRange" max="360" min="0" step="1" value="0"> 色の変更</label></div>
+                            <div><input type="checkbox" class="checkbox" name="moveHeaderToBottom" id="moveHeaderToBottom"><label for="moveHeaderToBottom">ツールバーを下に表示する</label></div>
+                        </div>
                     </div>
                     <div class="dialog-section">
                         <h2 class="dialog-section-title">実験的な機能</h2>
@@ -75,7 +79,7 @@
             </div>
         </div>
         <div class="dialog-container invisible" id="miniDialog">
-            <div class="mini-dialog">
+            <div class="mini-dialog dialog-section">
                 <div>
                     <p>この画像を削除しますか?</p>
                 </div>

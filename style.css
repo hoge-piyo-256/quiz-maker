@@ -1,10 +1,9 @@
 :root {
-    --var-header-height: 50px;
-    --var-background: #1f1f1f;
-    --var-foreground: white;
-    --var-first-color: #660000;
-    --var-second-color: #aa0000;
-    --main-color: red;
+    --header-height: 50px;
+    --background: #1f1f1f;
+    --foreground: white;
+    --first-color: hsl(0, 100%, 20%);
+    --second-color: hsl(0, 100%, 33%);
 }
 
 * {
@@ -12,18 +11,18 @@
 }
 
 body {
-    background: var(--var-background);
-    color: var(--var-foreground);
+    background: var(--background);
+    color: var(--foreground);
     margin: 0;
 }
 
 .checkbox {
-    accent-color: var(--var-second-color);
+    accent-color: var(--second-color);
 }
 
 .button {
-    background: var(--var-second-color);
-    color: var(--var-foreground);
+    background: var(--second-color);
+    color: var(--foreground);
     border: none;
     padding: 5px 10px;
     border-radius: 100px;
@@ -32,8 +31,8 @@ body {
 }
 
 .header {
-    background: var(--var-first-color);
-    height: var(--var-header-height);
+    background: var(--first-color);
+    height: var(--header-height);
     width: 100vw;
     position: fixed;
     left: 0;
@@ -51,7 +50,7 @@ body {
 }
 
 .header-space {
-    height: var(--var-header-height);
+    height: var(--header-height);
     top: 0;
     left: 0;
     padding: 5px;
@@ -65,8 +64,9 @@ body {
 .main {
     padding: 5px;
     width: 100vw;
-    height: calc(100dvh - var(--var-header-height));
+    height: calc(100dvh - var(--header-height));
     box-sizing: border-box;
+    position: relative;
 }
 
 .menu-button {
@@ -83,11 +83,18 @@ body {
 .quiz-image {
     width: 100%;
     height: 100%;
-    background: url(default.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
     box-sizing: border-box;
+}
+
+.quiz-noimage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    transform: translate(-50%, -50%);
 }
 
 .dialog-container {
@@ -107,7 +114,7 @@ body {
     transform: translate(-50%, -50%);
     width: calc(100% - 50px);
     height: calc(100% - 50px);
-    background: var(--var-background);
+    background: var(--background);
     border-radius: 10px;
     padding: 30px;
     box-sizing: border-box;
@@ -153,7 +160,7 @@ body {
 
 .dialog-image-list-bar {
     width: 100%;
-    background: var(--var-second-color);
+    background: var(--second-color);
     text-align: center;
     cursor: pointer;
 }
@@ -178,9 +185,9 @@ body {
 }
 
 .experimental-zone {
-    background: var(--var-first-color);
+    background: var(--first-color);
     padding: 10px;
-    border: var(--var-second-color) 3px solid;
+    border: var(--second-color) 3px solid;
     border-radius: 10px;
 }
 
@@ -193,7 +200,7 @@ body {
     height: max-content;
     max-width: calc(100% - 50px);
     max-height: calc(100% - 50px);
-    background: var(--var-background);
+    background: var(--background);
     border-radius: 10px;
     padding: 30px;
     box-sizing: border-box;
