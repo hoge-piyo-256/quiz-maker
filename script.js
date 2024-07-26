@@ -29,7 +29,7 @@ const loadButtonElem = document.getElementById('loadButton');
 beginBarButtonElem.onclick = toggleShowAll;
 endBarButtonElem.onclick = toggleShowAll;
 changeQuizButtonElem.onclick = changeQuiz;
-colorRangeElem.onclick = changeColor;
+colorRangeElem.oninput = changeColor;
 
 // Local Storage が有効である場合、Local Storage からデータの復元を試みる
 window.onload = (e) => {
