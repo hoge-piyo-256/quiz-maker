@@ -260,7 +260,7 @@ colorValueInputElem.onclick = (e) => {
         if(!isNaN(Number(value)) && Number(value) >= 0) {
             value = Number(value) <= 360 ? Math.floor(Number(value)) : Math.floor(Number(value % 360));
             colorRangeElem.value = value;
-            colorValueElem.innerText = value;
+            refreshColorTheme();
         } else {
             alert('0 ~ 360 の整数を半角で入力してください。');
         }
