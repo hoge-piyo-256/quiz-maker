@@ -61,9 +61,11 @@
                         <div>
                             テーマ: 
                             <select name="theme" id="themeSelect" class="select-box">
-                                <option value="default" selected>端末の設定に従う</option>
-                                <option value="light">ライトテーマ</option>
-                                <option value="dark">ダークテーマ</option>
+                                <option value="default" class="option" selected>端末の設定に従う</option>
+                                <option value="light" class="option">ライトテーマ</option>
+                                <option value="dark" class="option">ダークテーマ</option>
+                                <option value="lightRainbow" class="option">ライトレインボー</option>
+                                <option value="darkRainbow" class="option">ダークレインボー</option>
                             </select>
                             <div><label>色の変更: <input type="range" class="range" id="colorRange" max="360" min="0" step="1" value="0"></label></div>
                             <div><input type="checkbox" class="checkbox" name="moveHeaderToBottom" id="moveHeaderToBottom"><label for="moveHeaderToBottom">ツールバーを下に表示する</label></div>

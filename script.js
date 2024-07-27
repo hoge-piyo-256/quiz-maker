@@ -389,12 +389,28 @@ function refreshColorTheme() {
         // ダークテーマ
         document.querySelector(':root').style.setProperty('--background', '#1f1f1f');
         document.querySelector(':root').style.setProperty('--foreground', 'white');
+        document.querySelector(':root').style.setProperty('--accent-foreground', 'white');
         document.querySelector(':root').style.setProperty('--first-color',`hsl(${degree}deg, 100%, 20%)`);
         document.querySelector(':root').style.setProperty('--second-color',`hsl(${degree}deg, 100%, 30%)`);
+    } else if(theme == 'lightRainbow') {
+        // ライトレインボーテーマ
+        document.querySelector(':root').style.setProperty('--background', 'white');
+        document.querySelector(':root').style.setProperty('--foreground', 'black');
+        document.querySelector(':root').style.setProperty('--accent-foreground', 'white');
+        document.querySelector(':root').style.setProperty('--first-color',`#808080`);
+        document.querySelector(':root').style.setProperty('--second-color',`linear-gradient(270deg, hsl(${Number(degree) + 180}deg, 100%, 30%), hsl(${Number(degree) + 290}deg, 100%, 30%))`);
+    } else if(theme == 'darkRainbow') {
+        // ダークレインボーテーマ
+        document.querySelector(':root').style.setProperty('--background', '#1f1f1f');
+        document.querySelector(':root').style.setProperty('--foreground', 'white');
+        document.querySelector(':root').style.setProperty('--accent-foreground', 'white');
+        document.querySelector(':root').style.setProperty('--first-color',`#303030`);
+        document.querySelector(':root').style.setProperty('--second-color',`linear-gradient(270deg, hsl(${Number(degree) + 180}deg, 100%, 30%), hsl(${Number(degree) + 290}deg, 100%, 30%))`);
     } else {
         // テーマの設定が「端末の設定に従う」かつ、matchMeadia が機能しなかった場合、ダークテーマに
         document.querySelector(':root').style.setProperty('--background', '#1f1f1f');
         document.querySelector(':root').style.setProperty('--foreground', 'white');
+        document.querySelector(':root').style.setProperty('--accent-foreground', 'white');
         document.querySelector(':root').style.setProperty('--first-color',`hsl(${degree}deg, 100%, 20%)`);
         document.querySelector(':root').style.setProperty('--second-color',`hsl(${degree}deg, 100%, 30%)`);
     }

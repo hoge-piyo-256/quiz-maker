@@ -39,6 +39,11 @@ body {
     border-radius: 100px;
 }
 
+.option {
+    background: var(--background);
+    color: var(--foreground)
+}
+
 .header {
     background: var(--first-color);
     height: var(--header-height);
@@ -196,8 +201,9 @@ body {
 
 .experimental-zone {
     background: var(--first-color);
+    color: var(--accent-foreground);
     padding: 10px;
-    border: var(--second-color) 3px solid;
+    border: var(--foreground) 3px solid;
     border-radius: 10px;
 }
 
