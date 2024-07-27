@@ -372,6 +372,7 @@ function createImageGrid() {
 
         let already = document.createElement('div');
         already.style.background = borderColor;
+        already.style.color = 'var(--accent-foreground)';
         already.style.width = 'max-content';
         already.innerText = '出題済';
         if(quiz[1]) cell.appendChild(already);
