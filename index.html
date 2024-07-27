@@ -25,7 +25,7 @@
         <!--ダイアログ-->
         <div class="dialog-container invisible" id="dialog">
             <div class="dialog">
-                <div class="dialog-title-bar">
+                <div class="flex">
                     <h1>各種設定</h1>
                     <div class="dialog-close-button" id="closeButton"></div>
                 </div>
@@ -67,7 +67,7 @@
                                 <option value="lightRainbow" class="option">ライトレインボー</option>
                                 <option value="darkRainbow" class="option">ダークレインボー</option>
                             </select>
-                            <div><label>色の変更: <input type="range" class="range" id="colorRange" max="360" min="0" step="1" value="0"></label></div>
+                            <div class="flex"><label>色の変更: <input type="range" class="range" id="colorRange" max="360" min="0" step="1" value="0"></label> <span id="colorValue">0</span><button class="button horizonal-margin" id="colorValueInput">入力</button></div>
                             <div><input type="checkbox" class="checkbox" name="moveHeaderToBottom" id="moveHeaderToBottom"><label for="moveHeaderToBottom">ツールバーを下に表示する</label></div>
                         </div>
                     </div>

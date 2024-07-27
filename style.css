@@ -136,7 +136,7 @@ body {
     flex-direction: column;
 }
 
-.dialog-title-bar {
+.flex {
     display: flex;
 }
 
@@ -234,6 +234,10 @@ body {
     display: flex;
     gap: 10px;
     flex-direction: row-reverse;
+}
+
+.horizonal-margin {
+    margin: 0px 10px;
 }
 
 .invisible {

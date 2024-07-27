@@ -17,9 +17,11 @@ const useLocalStorageElem = document.getElementById('useLocalStorage');
 const miniDialogElem = document.getElementById('miniDialog');
 const miniDialogImageElem = document.getElementById('miniDialogImage');
 const miniDialogDeleteElem = document.getElementById('miniDialogDelete');
-const miniDialogCancelElem = document.getElementById('miniDialogCancel')
+const miniDialogCancelElem = document.getElementById('miniDialogCancel');
 const deleteAllImageButtonElem = document.getElementById('deleteAllImageButton');
 const colorRangeElem = document.getElementById('colorRange');
+const colorValueElem = document.getElementById('colorValue');
+const colorValueInputElem = document.getElementById('colorValueInput');
 const themeSelectElem = document.getElementById('themeSelect');
 
 const beginBarButtonElem = document.getElementById('beginBarButton');
@@ -130,7 +132,7 @@ fileElem.onchange = (e) => {
     });
 
     if(files.length === 0) {
-        alert('指定されたファイルは全て画像ファイルではありませんでした。\r\n画像ファイルを指定してください。')
+        alert('指定されたファイルは全て画像ファイルではありませんでした。\r\n画像ファイルを指定してください。');
         quizzes = [];
         return;
     }
@@ -252,7 +254,20 @@ loadButtonElem.onchange = (e) => {
     }
 }
 
-moveHeaderToBottomElem.onchange = (e)=> {
+colorValueInputElem.onclick = (e) => {
+    let value = prompt('0 ~ 360 の整数を半角で入力してください。');
+    if(value !== null && value !== '') {
+        if(!isNaN(Number(value)) && Number(value) >= 0) {
+            value = Number(value) <= 360 ? Math.floor(Number(value)) : Math.floor(Number(value % 360));
+            colorRangeElem.value = value;
+            colorValueElem.innerText = value;
+        } else {
+            alert('0 ~ 360 の整数を半角で入力してください。');
+        }
+    }
+}
+
+moveHeaderToBottomElem.onchange = (e) => {
     localStorage.setItem('quiz-maker_moveHeaderToBottom', String(moveHeaderToBottomElem.checked));
     moveHeader();
 }
@@ -377,6 +392,8 @@ function refreshColorTheme() {
     
     let theme = themeSelectElem.value;
     localStorage.setItem('quiz-maker_themeSelect', theme);
+
+    colorValueElem.innerText = colorRangeElem.value;
     
     if(theme == 'light' || (theme == 'default' && window.matchMedia('(prefers-color-scheme: light)').matches)) {
         // ライトテーマ
